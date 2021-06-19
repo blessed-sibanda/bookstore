@@ -18,5 +18,5 @@ class ContactForm(forms.Form):
         send_mail("Site Message",
                   message,
                   "site@bookstore.com",
-                  ["customerservpythoice@bookstore.com"],
+                  ["customerservice@bookstore.com"],
                   fail_silently=False)
