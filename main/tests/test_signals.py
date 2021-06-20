@@ -1,10 +1,12 @@
-from django.test import TestCase
+import tempfile
+from django.test import TestCase, override_settings
 from django.core.files.images import ImageFile
 from decimal import Decimal
 from main import models
 
 
 class TestSignal(TestCase):
+    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def test_thumbnails_are_generated_on_save(self):
         product = models.Product(
             name="The cathedral and the bazaar",
@@ -27,7 +29,5 @@ class TestSignal(TestCase):
             expected_content = f.read()
             self.assertEqual(image.thumbnail.read(), expected_content)
 
-        image.thumbnail.delete(save=False)
-        image.image.delete(save=False)
 
 
