@@ -42,6 +42,9 @@ ALTER USER bookstore CREATEDB;
 (venv) python manage.py migrate
 ```
 
+- download `chromedriver` and place it in the project root folder (i.e the directory that contains `manage.py`)
+
+
 - run tests with coverage
 
 ```commandline
