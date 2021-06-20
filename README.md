@@ -26,7 +26,7 @@ python3 -m venv venv
 (venv) pip install -r requirements.txt
 ```
 
-- create postgresql database in **psql** shell (or **pgadmin**)
+- create postgresql database in **psql** shell
 
 ```postgresql
 CREATE DATABASE bookstore;
