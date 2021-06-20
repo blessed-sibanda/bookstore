@@ -1,3 +1,4 @@
+import os
 import tempfile
 from PIL import Image
 from django.test import TestCase, override_settings
@@ -27,11 +28,13 @@ class TestSignal(TestCase):
         self.assertGreaterEqual(len(cm.output), 1)
         image.refresh_from_db()
 
-        thumb = Image.open(image.thumbnail.url[1:])
-        self.assertLessEqual(thumb.width, 300)
-        self.assertLessEqual(thumb.height, 300)
+        thumbnail_url = image.thumbnail.url[1:]
+        with Image.open(thumbnail_url) as thumb:
+            self.assertLessEqual(thumb.width, 300)
+            self.assertLessEqual(thumb.height, 300)
 
         image.image.delete(save=False)
+        os.remove(thumbnail_url)
         image.thumbnail.delete(save=False)
 
 
