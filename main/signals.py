@@ -16,6 +16,7 @@ def generate_thumbnail(sender, instance, **kwargs):
         "Generating thumbnail for product %d",
         instance.product.id
     )
+
     image = Image.open(instance.image)
     image = image.convert("RGB")
     image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)

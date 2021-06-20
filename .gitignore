@@ -7,3 +7,6 @@ db.sqlite3
 htmlcov
 .coverage
 !media/.keep
+chromedriver.exe
+media/product-images
+media/product-thumbnails

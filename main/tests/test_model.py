@@ -4,6 +4,13 @@ from main import models
 
 
 class TestModel(TestCase):
+    def test_product_str_representation(self):
+        p = models.Product.objects.create(
+            name="The cathedral and the bazaar",
+            price=Decimal("10.00")
+        )
+        self.assertEqual(str(p), p.name)
+
     def test_active_manager_works(self):
         models.Product.objects.create(
             name="The cathedral and the bazaar",
