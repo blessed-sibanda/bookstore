@@ -6,7 +6,7 @@
 
 ## Instructions
 
-- download and install Python3 and PostgreSQL RDMS
+- download and install [Python3](https://www.python.org/downloads/) and [PostgreSQL RDMS](https://www.postgresql.org/download/)
 
 - clone or download this repo
 
