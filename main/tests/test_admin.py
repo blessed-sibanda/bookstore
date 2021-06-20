@@ -36,8 +36,9 @@ class ProductImageAdminTestCase(StaticLiveServerTestCase):
         self.selenium.find_element_by_css_selector('input[type="submit"]').click()
 
         self.selenium.find_element_by_link_text('Product images').click()
+        # import pdb; pdb.set_trace()
         product_image_thumbnail = self.\
-            selenium.find_element_by_css_selector('th.field-thumbnail_tag img')
+            selenium.find_element_by_css_selector('th.field-thumbnail_tag > a > img')
         thumbnail_width = product_image_thumbnail.get_attribute('width')
         self.assertEqual(thumbnail_width, '70')
         thumbnail_src = product_image_thumbnail.get_attribute('src')

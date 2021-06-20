@@ -1,12 +1,14 @@
 import tempfile
+from PIL import Image
 from django.test import TestCase, override_settings
 from django.core.files.images import ImageFile
+# from django.conf import settings
 from decimal import Decimal
 from main import models
 
 
 class TestSignal(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
+    # @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def test_thumbnails_are_generated_on_save(self):
         product = models.Product(
             name="The cathedral and the bazaar",
@@ -25,9 +27,12 @@ class TestSignal(TestCase):
         self.assertGreaterEqual(len(cm.output), 1)
         image.refresh_from_db()
 
-        with open("main/fixtures/the-cathedral-the-bazaar.thumb.jpg", "rb") as f:
-            expected_content = f.read()
-            self.assertEqual(image.thumbnail.read(), expected_content)
+        thumb = Image.open(image.thumbnail.url[1:])
+        self.assertLessEqual(thumb.width, 300)
+        self.assertLessEqual(thumb.height, 300)
+
+        image.image.delete(save=False)
+        image.thumbnail.delete(save=False)
 
 
 

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -160,4 +160,9 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-CHROMEDRIVER = BASE_DIR / 'chromedriver.exe'
+
+if os.name == 'posix':
+    CHROMEDRIVER = BASE_DIR / 'chromedriver'
+    
+if os.name == 'nt':
+    CHROMEDRIVER = BASE_DIR / 'chromedriver.exe'

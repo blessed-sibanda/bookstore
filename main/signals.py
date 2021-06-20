@@ -6,7 +6,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from main.models import ProductImage
 
-THUMBNAIL_SIZE = (300, 300)
+THUMBNAIL_SIZE = (300, 300) # (width, height)
 logger = logging.getLogger(__name__)
 
 
@@ -18,6 +18,8 @@ def generate_thumbnail(sender, instance, **kwargs):
     )
 
     image = Image.open(instance.image)
+    if ((image.width < THUMBNAIL_SIZE[0]) and (image.height < THUMBNAIL_SIZE[1])):
+        return
     image = image.convert("RGB")
     image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
     temp_thumb = BytesIO()

@@ -8,5 +8,6 @@ htmlcov
 .coverage
 !media/.keep
 chromedriver.exe
+chromedriver*
 media/product-images
 media/product-thumbnails
