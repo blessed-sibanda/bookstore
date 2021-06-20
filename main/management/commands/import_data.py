@@ -31,13 +31,15 @@ class Command(BaseCommand):
                     c['tags'] += 1
                     if tag_created:
                         c['tags_created'] += 1
-                with open(settings.BASE_DIR / options['image_basedir'] / row['image_filename'], 'rb') as f:
-                    image = models.ProductImage(
-                        product=product,
-                        image=ImageFile(f, name=row['image_filename'])
-                    )
-                    image.save()
-                    c['images'] += 1
+                # only create product-image if its a new product
+                if created:
+                    with open(settings.BASE_DIR / options['image_basedir'] / row['image_filename'], 'rb') as f:
+                        image = models.ProductImage(
+                            product=product,
+                            image=ImageFile(f, name=row['image_filename'])
+                        )
+                        image.save()
+                        c['images_created'] += 1
                 product.save()
                 c['products'] += 1
                 if created:
@@ -50,4 +52,4 @@ class Command(BaseCommand):
             "Tags processed=%d (created=%d)"
             % (c['tags'], c['tags_created'])
         )
-        self.stdout.write("Images processed=%d" % c['images'])
+        self.stdout.write("Images created=%d" % c['images_created'])

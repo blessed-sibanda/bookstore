@@ -23,8 +23,8 @@ class TestImport(TestCase):
         expected_out = ("Importing products\n"
                         "Products processed=3 (created=2)\n"
                         "Tags processed=6 (created=4)\n"
-                        "Images processed=3\n")
+                        "Images created=2\n")
         self.assertEqual(out.getvalue(), expected_out)
         self.assertEqual(models.Product.objects.count(), 3)
         self.assertEqual(models.ProductTag.objects.count(), 6)
-        self.assertEqual(models.ProductImage.objects.count(), 3)
+        self.assertEqual(models.ProductImage.objects.count(), 2)
