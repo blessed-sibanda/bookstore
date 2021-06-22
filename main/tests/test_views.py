@@ -105,3 +105,13 @@ class TestPage(TestCase):
             list(product_list)
         )
 
+    def test_product_detail_page_works(self):
+        p = models.Product.objects.create(
+            name='The cathedral and the bazaar',
+            slug='cathedral-bazaar',
+            price=Decimal('10.00'),
+        )
+        response = self.client.get(reverse('product', kwargs={'slug': p.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, p.name)
+        self.assertContains(response, str(p.price))

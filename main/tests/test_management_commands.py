@@ -57,6 +57,7 @@ class TestImport(TestCase):
         self.assertEqual(models.ProductTag.objects.count(), 0)
         self.assertEqual(models.ProductImage.objects.count(), 0)
 
+    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def test_import_data_does_not_create_products_with_nonexistent_image(self):
         out = StringIO()
         args = ["main/fixtures/product-sample-with-nonexistent-image.csv",
