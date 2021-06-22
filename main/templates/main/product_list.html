@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Products</h1>
+    {% for product in products %}
+        <p>{{ product.name }}</p>
+        <p>
+            <a href="#">See it here</a>
+        </p>
+        {% if not forloop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+    {% include 'main/_pagination.html' %}
+{% endblock %}
