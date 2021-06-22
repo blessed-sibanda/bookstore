@@ -3,13 +3,11 @@ import tempfile
 from PIL import Image
 from django.test import TestCase, override_settings
 from django.core.files.images import ImageFile
-# from django.conf import settings
 from decimal import Decimal
 from main import models
 
 
 class TestSignal(TestCase):
-    # @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def test_thumbnails_are_generated_on_save(self):
         product = models.Product(
             name="The cathedral and the bazaar",

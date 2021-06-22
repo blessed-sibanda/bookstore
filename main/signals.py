@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 @receiver(pre_save, sender=ProductImage)
 def generate_thumbnail(sender, instance, **kwargs):
     image = Image.open(instance.image)
-    if ((image.width < THUMBNAIL_SIZE[0]) and (image.height < THUMBNAIL_SIZE[1])):
-        return
+
     logger.info(
         "Generating thumbnail for product %d",
         instance.product.id

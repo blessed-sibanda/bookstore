@@ -1,4 +1,4 @@
-import csv
+import csv, os
 from collections import Counter
 from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand
@@ -17,7 +17,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Importing products')
         c = Counter()
-        with open(settings.BASE_DIR / options['csvfile'], 'r') as csvfile:
+        csvfile_path = settings.BASE_DIR / options['csvfile']
+
+        if not os.path.exists(csvfile_path):
+            self.stdout.write(f"The file: '{csvfile_path}' does not exist")
+            return
+
+        images_dir = settings.BASE_DIR / options['image_basedir']
+        if not os.path.exists(images_dir):
+            self.stdout.write(f"The directory: '{images_dir}' does not exist")
+            return
+
+        with open(csvfile_path, 'r') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 product, created = models.Product.objects.get_or_create(
@@ -25,15 +36,23 @@ class Command(BaseCommand):
                 )
                 product.description = row['description']
                 product.slug = slugify(row['name'])
+
+                image_path = images_dir / row['image_filename']
+                if not os.path.exists(image_path):
+                    self.stdout.write(f"Could not create product '{product.name}' and its image: '{image_path}'")
+                    self.stdout.write(f"The image: '{image_path}' does not exist")
+                    product.delete()
+                    continue
+
                 for import_tag in row['tags'].split("|"):
                     tag, tag_created = models.ProductTag.objects.get_or_create(name=import_tag)
                     product.tags.add(tag)
                     c['tags'] += 1
                     if tag_created:
                         c['tags_created'] += 1
-                # only create product-image if its a new product
+
                 if created:
-                    with open(settings.BASE_DIR / options['image_basedir'] / row['image_filename'], 'rb') as f:
+                    with open(images_dir / row['image_filename'], 'rb') as f:
                         image = models.ProductImage(
                             product=product,
                             image=ImageFile(f, name=row['image_filename'])
