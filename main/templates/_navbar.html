@@ -1,32 +1,46 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="#">BookStore</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}"
-             href="{% url 'home' %}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if request.path == '/products/all' %}active{% endif %}"
-             href="{% url 'products' 'all' %}">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if request.path == '/about-us/' %}active{% endif %}"
-             href="{% url 'about_us' %}">About us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if request.path == '/contact-us/' %}active{% endif %}"
-             href="{% url 'contact_us' %}">Contact us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if request.path == '/signup/' %}active{% endif %}"
-             href="{% url 'signup' %}">Signup</a>
-        </li>
-      </ul>
+    <div class="container">
+        <a class="navbar-brand" href="#">BookStore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                       href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/products/all' %}active{% endif %}"
+                       href="{% url 'products' 'all' %}">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/about-us/' %}active{% endif %}"
+                       href="{% url 'about_us' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/contact-us/' %}active{% endif %}"
+                       href="{% url 'contact_us' %}">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/signup/' %}active{% endif %}"
+                           href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/signup/' %}active{% endif %}"
+                           href="{% url 'signup' %}">Signup</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/login/' %}active{% endif %}"
+                           href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>

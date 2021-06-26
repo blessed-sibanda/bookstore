@@ -29,13 +29,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
+
     'crispy_forms',
 ]
 
@@ -168,3 +170,4 @@ if os.name == 'nt':
     CHROMEDRIVER = BASE_DIR / 'chromedriver.exe'
 
 AUTH_USER_MODEL = 'main.User'
+LOGIN_REDIRECT_URL = 'home'

@@ -142,3 +142,55 @@ class TestPage(TestCase):
                 auth.get_user(self.client).is_authenticated
             )
             mock_send.assert_called_once()
+
+    def test_login_page_renders_correctly(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+        self.assertContains(response, 'BookStore')
+        self.assertIsInstance(response.context['form'],
+                              forms.AuthenticationForm)
+
+    def test_logging_in_with_correct_credentials(self):
+        email = 'blessed@example.com'
+        password = '1234pass'
+        models.User.objects.create_user(email=email, password=password)
+        user_data = {
+            'email': email,
+            'password': password,
+        }
+        response = self.client.post(reverse('login'), user_data, follow=True)
+        request = response.context['request']
+        self.assertTrue(request.user.is_authenticated)
+
+    def test_logging_in_with_incorrect_credentials(self):
+        email = 'blessed@example.com'
+        password = '1234pass'
+        models.User.objects.create_user(email=email, password=password)
+        user_data = {
+            'email': email,
+            'password': 'wrong-password',
+        }
+        response = self.client.post(reverse('login'), user_data, follow=True)
+        request = response.context['request']
+        self.assertFalse(request.user.is_authenticated)
+        self.assertContains(response, "Invalid email/password combination")
+
+    def test_logging_in_with_blank_credentials(self):
+        response = self.client.post(reverse('login'), {'email': '', 'password': ''}, follow=True)
+        request = response.context['request']
+        self.assertFalse(request.user.is_authenticated)
+
+    def test_logout(self):
+        models.User.objects.create_user(email='blessed@example.com', password='1234pass')
+        response = self.client.post(reverse('login'),
+                                    {'email': 'blessed@example.com',
+                                     'password': '1234pass'}, follow=True)
+        request = response.context['request']
+        self.assertTrue(request.user.is_authenticated)
+
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 200)
+
+        request = response.context['request']
+        self.assertFalse(request.user.is_authenticated)
