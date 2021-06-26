@@ -53,3 +53,23 @@ class TestModel(TestCase):
             slug='fiction'
         )
         self.assertEqual(tag1.natural_key(), (tag1.slug,))
+
+    def test_user_manager_does_not_create_user_if_email_is_not_given(self):
+        with self.assertRaises(ValueError):
+            models.User.objects.create_user(email='', password='1234pass')
+
+    def test_create_superuser(self):
+        user = models.User.objects.create_superuser(email='blessed@example.com',
+                                                    password='1234pass')
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_superuser)
+
+    def test_create_superuser_with_wrong_arguments(self):
+        with self.assertRaises(ValueError):
+            models.User.objects.create_superuser(email='blessed@example.com',
+                                                 password='1234pass',
+                                                 is_staff=False)
+        with self.assertRaises(ValueError):
+            models.User.objects.create_superuser(email='blessed@example.com',
+                                                 password='1234pass',
+                                                 is_superuser=False)
