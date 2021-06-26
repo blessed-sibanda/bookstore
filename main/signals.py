@@ -1,12 +1,13 @@
 import logging
+import os
 from io import BytesIO
 from PIL import Image
 from django.core.files.base import ContentFile
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 from main.models import ProductImage
 
-THUMBNAIL_SIZE = (300, 300) # (width, height)
+THUMBNAIL_SIZE = (300, 300)  # (width, height)
 logger = logging.getLogger(__name__)
 
 
@@ -31,3 +32,14 @@ def generate_thumbnail(sender, instance, **kwargs):
         save=False
     )
     temp_thumb.close()
+
+
+@receiver(pre_delete, sender=ProductImage)
+def delete_image_and_thumbnail(sender, instance, **kwargs):
+    image_url_path = instance.image.url[1:]
+    if os.path.exists(image_url_path):
+        os.remove(image_url_path)
+
+    thumbnail_url_path = instance.thumbnail.url[1:]
+    if os.path.exists(thumbnail_url_path):
+        os.remove(thumbnail_url_path)
