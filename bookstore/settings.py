@@ -163,6 +163,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 if os.name == 'posix':
     CHROMEDRIVER = BASE_DIR / 'chromedriver'
-    
+
 if os.name == 'nt':
     CHROMEDRIVER = BASE_DIR / 'chromedriver.exe'
+
+AUTH_USER_MODEL = 'main.User'
